@@ -85,8 +85,8 @@ The following input variables are optional (have default values):
 
 Description: Allows creation of a role-assignable group without any owners. Not recommended.
 
-Why: Owners provide delegated recovery and governance for privileged groups.
-Leaving a role-assignable group ownerless can impede lifecycle management and
+Why: Owners provide delegated recovery and governance for privileged groups.  
+Leaving a role-assignable group ownerless can impede lifecycle management and  
 reduce accountability.
 
 References:
@@ -140,8 +140,8 @@ Default: `[]`
 
 ### <a name="input_enable_telemetry"></a> [enable\_telemetry](#input\_enable\_telemetry)
 
-Description: This variable controls whether or not telemetry is enabled for the module.
-For more information see <https://aka.ms/avm/telemetryinfo>.
+Description: This variable controls whether or not telemetry is enabled for the module.  
+For more information see <https://aka.ms/avm/telemetryinfo>.  
 If it is set to false, then no telemetry will be collected.
 
 Type: `bool`
@@ -173,7 +173,7 @@ Description: Optional settings applied to the Entra ID group beyond the baseline
 Role-assignable groups have special properties and limitations that should be considered:
 
 ### When Role-Assignable is REQUIRED:
-- **Entra ID Role Assignment**: If you want to assign Entra ID (directory) roles to a group, it MUST be role-assignable.
+- **Entra ID Role Assignment**: If you want to assign Entra ID (directory) roles to a group, it MUST be role-assignable.  
   The `assignable_to_role` property must be set at group creation and cannot be changed afterward.
 
 ### When Role-Assignable is RECOMMENDED:
@@ -241,8 +241,8 @@ Default: `{}`
 
 Description: The maximum duration for which a PIM group membership can be activated. Should be an ISO 8601 duration string (e.g., 'PT8H' for 8 hours).
 
-**IMPORTANT**: Due to a bug in the msgraph Terraform provider (https://github.com/microsoft/terraform-provider-msgraph/issues/75),
-changing this value from the Microsoft default (PT8H) will cause persistent drift. The provider reports successful updates
+**IMPORTANT**: Due to a bug in the msgraph Terraform provider (https://github.com/microsoft/terraform-provider-msgraph/issues/75),  
+changing this value from the Microsoft default (PT8H) will cause persistent drift. The provider reports successful updates  
 but the API does not persist the changes. Until the provider is fixed, use the default value to avoid drift.
 
 Type: `string`
@@ -269,8 +269,8 @@ Default: `"singleUser"`
 
 Description: The ISO8601 duration that an eligibility assignment remains valid (e.g., 'P365D').
 
-**IMPORTANT**: Due to a bug in the msgraph Terraform provider (https://github.com/microsoft/terraform-provider-msgraph/issues/75),
-changing this value from the Microsoft default (P365D) will cause persistent drift. The provider reports successful updates
+**IMPORTANT**: Due to a bug in the msgraph Terraform provider (https://github.com/microsoft/terraform-provider-msgraph/issues/75),  
+changing this value from the Microsoft default (P365D) will cause persistent drift. The provider reports successful updates  
 but the API does not persist the changes. Until the provider is fixed, use the default value to avoid drift.
 
 Type: `string`
