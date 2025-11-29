@@ -102,20 +102,4 @@ resource "azuread_group_role_management_policy" "this" {
   }
 }
 
-resource "random_uuid" "eligible_assigned_role_name" {
-  for_each = var.eligible_assigned_roles
-}
 
-resource "azapi_resource" "eligible_assigned_roles" {
-  for_each = local.eligible_assigned_roles_azapi
-
-  name                 = each.value.name
-  parent_id            = each.value.parent_id
-  type                 = "Microsoft.Authorization/roleEligibilityScheduleRequests@2022-04-01-preview"
-  body                 = jsonencode(each.value.body)
-  create_headers       = var.enable_telemetry ? { "User-Agent" = local.avm_azapi_header } : null
-  delete_headers       = var.enable_telemetry ? { "User-Agent" = local.avm_azapi_header } : null
-  ignore_null_property = true
-  read_headers         = var.enable_telemetry ? { "User-Agent" = local.avm_azapi_header } : null
-  update_headers       = var.enable_telemetry ? { "User-Agent" = local.avm_azapi_header } : null
-}

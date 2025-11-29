@@ -58,14 +58,12 @@ The following requirements are needed by this module:
 
 The following resources are used by this module:
 
-- [azapi_resource.assigned_roles](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
-- [azapi_resource.eligible_assigned_roles](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
+
 - [azuread_group.this](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/group) (resource)
 - [azuread_group_role_management_policy.this](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/group_role_management_policy) (resource)
 - [azuread_privileged_access_group_eligibility_schedule.this](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/privileged_access_group_eligibility_schedule) (resource)
 - [modtm_telemetry.telemetry](https://registry.terraform.io/providers/azure/modtm/latest/docs/resources/telemetry) (resource)
-- [random_uuid.assigned_role_name](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/uuid) (resource)
-- [random_uuid.eligible_assigned_role_name](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/uuid) (resource)
+
 - [random_uuid.telemetry](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/uuid) (resource)
 - [azapi_client_config.telemetry](https://registry.terraform.io/providers/Azure/azapi/latest/docs/data-sources/client_config) (data source)
 - [modtm_module_source.telemetry](https://registry.terraform.io/providers/azure/modtm/latest/docs/data-sources/module_source) (data source)
@@ -104,100 +102,7 @@ Type: `bool`
 
 Default: `false`
 
-### <a name="input_assigned_role_definition_lookup_use_live_data"></a> [assigned\_role\_definition\_lookup\_use\_live\_data](#input\_assigned\_role\_definition\_lookup\_use\_live\_data)
 
-Description: Whether to use live (API) data for role definition name lookups. If false, cached data from the helper module is used for stability.
-
-Type: `bool`
-
-Default: `false`
-
-### <a name="input_assigned_role_replace_on_immutable_value_changes"></a> [assigned\_role\_replace\_on\_immutable\_value\_changes](#input\_assigned\_role\_replace\_on\_immutable\_value\_changes)
-
-Description: If true, role assignments will be replaced automatically when principalId or roleDefinitionId changes. Leave false to avoid replacement loops with unknown values.
-
-Type: `bool`
-
-Default: `false`
-
-### <a name="input_assigned_roles"></a> [assigned\_roles](#input\_assigned\_roles)
-
-Description: A map of Azure RBAC role assignments where the created group will be assigned as principal.  
-Unlike the standard AVM role\_assignments interface, these assignments are made TO external Azure  
-resources (at the specified scope), not on the group itself.
-
-- `<map key>` - An arbitrary unique key for the assignment.
-- `scope` - The Azure resource ID where the role assignment will be created.
-- `role_definition_id_or_name` - The ID or name of the role definition to assign.
-- `name` - (Optional) The name GUID for the role assignment. If not provided, a random UUID will be generated.
-- `principal_id` - (Optional) The principal ID to assign. Defaults to the created group's ID.
-- `description` - (Optional) The description of the role assignment.
-- `skip_service_principal_aad_check` - (Optional) If set to true, skips the Azure Active Directory check for the service principal.
-- `condition` - (Optional) The condition which will be used to scope the role assignment.
-- `condition_version` - (Optional) The version of the condition syntax. Valid values are '2.0'.
-- `delegated_managed_identity_resource_id` - (Optional) The delegated Azure Resource Id which contains a Managed Identity.
-- `principal_type` - (Optional) The type of the `principal_id`. Possible values are `User`, `Group` and `ServicePrincipal`.
-- `timeouts` - (Optional) Timeout configuration for create, read, and delete operations.
-
-Type:
-
-```hcl
-map(object({
-    scope                                  = string
-    role_definition_id_or_name             = string
-    name                                   = optional(string, null)
-    principal_id                           = optional(string, null)
-    principal_type                         = optional(string, null)
-    description                            = optional(string, null)
-    skip_service_principal_aad_check       = optional(bool, false)
-    condition                              = optional(string, null)
-    condition_version                      = optional(string, null)
-    delegated_managed_identity_resource_id = optional(string, null)
-    timeouts = optional(object({
-      create = optional(string, null)
-      read   = optional(string, null)
-      delete = optional(string, null)
-    }), null)
-  }))
-```
-
-Default: `{}`
-
-### <a name="input_eligible_assigned_roles"></a> [eligible\_assigned\_roles](#input\_eligible\_assigned\_roles)
-
-Description: Map of PIM-eligible role assignments keyed by an arbitrary identifier.
-
-Type:
-
-```hcl
-map(object({
-    scope                      = string
-    role_definition_id_or_name = string
-    principal_id               = optional(string, null)
-    condition                  = optional(string, null)
-    condition_version          = optional(string, null)
-    justification              = optional(string, null)
-    schedule = optional(object({
-      start_date_time = optional(string, null)
-      expiration = optional(object({
-        duration_days  = optional(number, null)
-        duration_hours = optional(number, null)
-        end_date_time  = optional(string, null)
-      }), null)
-    }), null)
-    ticket = optional(object({
-      system = optional(string, null)
-      number = optional(string, null)
-    }), null)
-    timeouts = optional(object({
-      create = optional(string, null)
-      read   = optional(string, null)
-      delete = optional(string, null)
-    }), null)
-  }))
-```
-
-Default: `{}`
 
 ### <a name="input_eligible_member_schedules"></a> [eligible\_member\_schedules](#input\_eligible\_member\_schedules)
 
@@ -484,25 +389,15 @@ Type: `bool`
 
 Default: `true`
 
-### <a name="input_role_definition_lookup_scope"></a> [role\_definition\_lookup\_scope](#input\_role\_definition\_lookup\_scope)
 
-Description: Scope (resource ID) used to list role definitions for name→ID resolution (e.g. subscription or management group). If null, name lookups rely on direct IDs or may fail if a name was supplied.
-
-Type: `string`
-
-Default: `null`
 
 ## Outputs
 
 The following outputs are exported:
 
-### <a name="output_assigned_roles_azapi"></a> [assigned\_roles\_azapi](#output\_assigned\_roles\_azapi)
 
-Description: Canonical map of permanent role assignments ready for azapi\_resource consumption (name + body + scope derived).
 
-### <a name="output_eligible_assigned_roles_azapi"></a> [eligible\_assigned\_roles\_azapi](#output\_eligible\_assigned\_roles\_azapi)
 
-Description: Canonical map of eligible role assignments ready for azapi\_resource consumption.
 
 ### <a name="output_group_id"></a> [group\_id](#output\_group\_id)
 
@@ -516,15 +411,7 @@ Description: The Object ID of the created Entra ID group (same as group\_id).
 
 Description: The Azure resource ID of the Entra ID group. This output is required by Azure Verified Modules specification RMFR7.
 
-## Modules
 
-The following Modules are called:
-
-### <a name="module_role_definitions"></a> [role\_definitions](#module\_role\_definitions)
-
-Source: Azure/avm-utl-roledefinitions/azure
-
-Version: 0.1.0
 
 <!-- markdownlint-disable-next-line MD041 -->
 ## Data Collection

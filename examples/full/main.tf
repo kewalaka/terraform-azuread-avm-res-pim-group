@@ -93,12 +93,7 @@ module "privileged_group" {
   source = "../.."
 
   name = "pag-module-testing-admins-${random_string.group_suffix.result}"
-  assigned_roles = {
-    subscription = {
-      scope                      = local.subscription_scope
-      role_definition_id_or_name = "Owner"
-    }
-  }
+
   eligible_member_schedules = {
     front_line = {
       justification = "Operations on-call rotation."
@@ -179,5 +174,5 @@ module "privileged_group" {
   }
   pim_require_approval_on_activation = true
   pim_require_mfa_on_activation      = true
-  role_definition_lookup_scope       = local.subscription_scope
+
 }

@@ -4,43 +4,7 @@
 # 2. Update PIM policy rules (via pim_* variables)
 # Reference: https://learn.microsoft.com/en-us/graph/api/resources/privilegedidentitymanagement-for-groups-api-overview#onboarding-groups-to-pim-for-groups
 
-variable "eligible_assigned_roles" {
-  type = map(object({
-    scope                      = string
-    role_definition_id_or_name = string
-    principal_id               = optional(string, null)
-    condition                  = optional(string, null)
-    condition_version          = optional(string, null)
-    justification              = optional(string, null)
-    schedule = optional(object({
-      start_date_time = optional(string, null)
-      expiration = optional(object({
-        duration_days  = optional(number, null)
-        duration_hours = optional(number, null)
-        end_date_time  = optional(string, null)
-      }), null)
-    }), null)
-    ticket = optional(object({
-      system = optional(string, null)
-      number = optional(string, null)
-    }), null)
-    timeouts = optional(object({
-      create = optional(string, null)
-      read   = optional(string, null)
-      delete = optional(string, null)
-    }), null)
-  }))
-  default     = {}
-  description = "Map of PIM-eligible role assignments keyed by an arbitrary identifier."
 
-  validation {
-    condition = alltrue([
-      for _, cfg in var.eligible_assigned_roles :
-      length(trimspace(cfg.scope)) > 0 && length(trimspace(cfg.role_definition_id_or_name)) > 0
-    ])
-    error_message = "Each eligible role assignment must include both scope and role_definition_id_or_name."
-  }
-}
 
 variable "eligible_member_schedules" {
   type = map(object({

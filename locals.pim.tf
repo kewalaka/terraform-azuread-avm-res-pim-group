@@ -31,47 +31,7 @@ locals {
   }
   # Merge them
   eligibility_schedules = merge(local.eligible_members_map, local.eligible_schedules_map)
-  eligible_assigned_roles_azapi = {
-    for k, v in var.eligible_assigned_roles : k => {
-      name      = random_uuid.eligible_assigned_role_name[k].result
-      parent_id = v.scope
-      body = {
-        properties = {
-          principalId      = coalesce(v.principal_id, azuread_group.this.object_id)
-          roleDefinitionId = local.eligible_assigned_roles_role_definition_resource_ids[k]
-          requestType      = "AdminAssign"
-          condition        = v.condition
-          conditionVersion = v.condition_version
-          justification    = v.justification
-          scheduleInfo = v.schedule == null ? null : {
-            startDateTime = v.schedule.start_date_time
-            expiration = v.schedule.expiration == null ? null : {
-              type        = v.schedule.expiration.end_date_time != null ? "AfterDateTime" : (v.schedule.expiration.duration_days != null || v.schedule.expiration.duration_hours != null ? "AfterDuration" : "NoExpiration")
-              endDateTime = v.schedule.expiration.end_date_time
-              duration    = v.schedule.expiration.duration_days != null ? "P${v.schedule.expiration.duration_days}D" : (v.schedule.expiration.duration_hours != null ? "PT${v.schedule.expiration.duration_hours}H" : null)
-            }
-          }
-          ticketInfo = v.ticket == null ? null : {
-            ticketNumber = v.ticket.number
-            ticketSystem = v.ticket.system
-          }
-        }
-      }
-    }
-  }
-  # Eligible Role Assignments Logic
-  eligible_assigned_roles_is_id = {
-    for key, cfg in var.eligible_assigned_roles :
-    key => (
-      can(regex("^/subscriptions/", cfg.role_definition_id_or_name)) ||
-      can(regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", lower(cfg.role_definition_id_or_name)))
-    )
-  }
-  eligible_assigned_roles_role_definition_resource_ids = {
-    for k, v in var.eligible_assigned_roles : k => (
-      local.eligible_assigned_roles_is_id[k] ? v.role_definition_id_or_name : lookup(local.role_definitions_map, v.role_definition_id_or_name, v.role_definition_id_or_name)
-    )
-  }
+
   # Convert list to map
   # Use index as key to allow for unknown principal_ids (e.g. created in same apply)
   eligible_members_map = {

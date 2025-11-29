@@ -1,17 +1,6 @@
 # Group and role assignment resources
 
-# Role definition name-to-ID lookup using AVM utility module
-# Uses pessimistic version constraint (~>) to allow compatible minor/patch updates
-# while maintaining API compatibility per semantic versioning
-module "role_definitions" {
-  source  = "Azure/avm-utl-roledefinitions/azure"
-  version = "0.1.0"
-  count   = var.role_definition_lookup_scope == null ? 0 : 1
 
-  enable_telemetry      = var.enable_telemetry
-  role_definition_scope = var.role_definition_lookup_scope
-  use_cached_data       = !var.assigned_role_definition_lookup_use_live_data
-}
 
 resource "azuread_group" "this" {
   display_name       = var.name
@@ -51,37 +40,7 @@ resource "azuread_group" "this" {
   }
 }
 
-resource "random_uuid" "assigned_role_name" {
-  for_each = var.assigned_roles
-}
 
-resource "azapi_resource" "assigned_roles" {
-  for_each = local.assigned_roles_azapi
-
-  name                 = each.value.name
-  parent_id            = var.assigned_roles[each.key].scope
-  type                 = local.assigned_roles_type
-  body                 = each.value.body
-  create_headers       = var.enable_telemetry ? { "User-Agent" = local.avm_azapi_header } : null
-  delete_headers       = var.enable_telemetry ? { "User-Agent" = local.avm_azapi_header } : null
-  ignore_null_property = true
-  read_headers         = var.enable_telemetry ? { "User-Agent" = local.avm_azapi_header } : null
-  replace_triggers_refs = var.assigned_role_replace_on_immutable_value_changes ? [
-    "properties.principalId",
-    "properties.roleDefinitionId",
-    "properties.scheduleInfo",
-  ] : null
-  # Retry logic to handle Azure AD replication delays
-  retry = {
-    error_message_regex = [
-      "PrincipalNotFound",
-      "does not exist in the directory"
-    ]
-    interval_seconds     = 10
-    max_interval_seconds = 60
-  }
-  update_headers = var.enable_telemetry ? { "User-Agent" = local.avm_azapi_header } : null
-}
 
 
 
