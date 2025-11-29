@@ -1,5 +1,3 @@
-
-
 output "group_id" {
   description = "The ID of the created Entra ID group (Microsoft Graph group id)."
   value       = azuread_group.this.object_id

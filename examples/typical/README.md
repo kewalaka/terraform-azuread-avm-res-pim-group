@@ -131,12 +131,6 @@ module "privileged_group" {
   source = "../.."
 
   name = "pag-module-testing-${random_string.group_suffix.result}"
-  assigned_roles = {
-    subscription = {
-      scope                      = local.subscription_scope
-      role_definition_id_or_name = "Contributor"
-    }
-  }
   eligible_members = [
     azuread_group.operations_team.object_id,
   ]
@@ -173,8 +167,6 @@ module "privileged_group" {
   }
   pim_require_approval_on_activation = true
   pim_require_mfa_on_activation      = true
-  # Resolve role definition names (e.g., "Contributor") to IDs using helper module at subscription scope
-  role_definition_lookup_scope = local.subscription_scope
 }
 ```
 
@@ -199,6 +191,7 @@ The following resources are used by this module:
 - [azuread_group_member.operations_team_member](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/group_member) (resource)
 - [azuread_user.approver](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/user) (resource)
 - [azuread_user.operator](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/user) (resource)
+- [azurerm_role_assignment.example](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
 - [random_password.approver](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) (resource)
 - [random_password.eligible](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) (resource)
 - [random_string.group_suffix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) (resource)

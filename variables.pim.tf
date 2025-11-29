@@ -4,8 +4,6 @@
 # 2. Update PIM policy rules (via pim_* variables)
 # Reference: https://learn.microsoft.com/en-us/graph/api/resources/privilegedidentitymanagement-for-groups-api-overview#onboarding-groups-to-pim-for-groups
 
-
-
 variable "eligible_member_schedules" {
   type = map(object({
     principal_id         = string

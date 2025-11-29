@@ -100,12 +100,6 @@ module "privileged_group" {
   source = "../.."
 
   name = "pag-module-testing-admins-${random_string.group_suffix.result}"
-  assigned_roles = {
-    subscription = {
-      scope                      = local.subscription_scope
-      role_definition_id_or_name = "Owner"
-    }
-  }
   eligible_member_schedules = {
     front_line = {
       justification = "Operations on-call rotation."
@@ -186,7 +180,6 @@ module "privileged_group" {
   }
   pim_require_approval_on_activation = true
   pim_require_mfa_on_activation      = true
-  role_definition_lookup_scope       = local.subscription_scope
 }
 ```
 
@@ -210,6 +203,7 @@ The following resources are used by this module:
 - [azuread_user.admin_primary](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/user) (resource)
 - [azuread_user.admin_secondary](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/user) (resource)
 - [azuread_user.duty_manager](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/user) (resource)
+- [azurerm_role_assignment.example](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
 - [random_password.admin_primary](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) (resource)
 - [random_password.admin_secondary](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) (resource)
 - [random_password.duty_manager](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) (resource)

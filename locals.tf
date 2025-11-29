@@ -1,5 +1,4 @@
 locals {
-
   # Owners: use explicit list if provided; else fallback list
   group_explicit_owners = try(var.group_settings.owners, null)
   group_owners = (
@@ -7,5 +6,4 @@ locals {
     distinct(local.group_explicit_owners) :
     distinct(var.group_default_owner_object_ids)
   )
-
 }

@@ -29,8 +29,6 @@ Set to true only if you fully understand and accept the risk.
 DESC
 }
 
-
-
 variable "enable_telemetry" {
   type        = bool
   default     = true
@@ -122,5 +120,3 @@ Role-assignable groups have special properties and limitations that should be co
 - [Create a role-assignable group in Microsoft Entra ID](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/groups-create-eligible)
 DESCRIPTION
 }
-
-

@@ -92,7 +92,6 @@ module "privileged_group" {
   source = "../.."
 
   name = "pag-module-testing-${random_string.group_suffix.result}"
-
   eligible_members = [
     azuread_group.operations_team.object_id,
   ]
@@ -129,5 +128,4 @@ module "privileged_group" {
   }
   pim_require_approval_on_activation = true
   pim_require_mfa_on_activation      = true
-
 }

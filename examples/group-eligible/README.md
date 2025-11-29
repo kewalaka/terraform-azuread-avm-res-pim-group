@@ -104,23 +104,6 @@ module "privileged_group" {
   source = "../.."
 
   name = "legacy-pag-module-testing-${random_string.group_suffix.result}"
-  # Legacy pattern: the group is eligible for RBAC and owners activate on behalf of members.
-  eligible_assigned_roles = {
-    subscription = {
-      scope                      = local.subscription_scope
-      role_definition_id_or_name = "Contributor"
-      justification              = "Group-level activation required for legacy process."
-      schedule = {
-        expiration = {
-          duration_hours = 4
-        }
-      }
-      ticket = {
-        system = "ServiceNow"
-        number = "CHG0005678"
-      }
-    }
-  }
   # No eligible members are defined because membership is expected to be permanent in this pattern.
   eligible_members  = []
   group_description = "Legacy pattern: group itself is eligible for subscription RBAC."
@@ -130,7 +113,6 @@ module "privileged_group" {
     hide_from_outlook_clients = true
   }
   pim_require_mfa_on_activation = true
-  role_definition_lookup_scope  = local.subscription_scope
 }
 ```
 
@@ -152,6 +134,7 @@ The following requirements are needed by this module:
 The following resources are used by this module:
 
 - [azuread_user.legacy_owner](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/user) (resource)
+- [azurerm_pim_eligible_role_assignment.example](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/pim_eligible_role_assignment) (resource)
 - [random_password.owner](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) (resource)
 - [random_string.group_suffix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) (resource)
 - [azuread_domains.current](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/domains) (data source)

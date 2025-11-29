@@ -1,4 +1,4 @@
-# terraform-azuread-avm-ptn-pim-group
+# terraform-azuread-avm-res-pim-group
 
 A module in the style of Azure Verified Modules for managing an Entra ID Privileged Identity Management (PIM) group.
 

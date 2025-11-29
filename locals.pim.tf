@@ -31,7 +31,6 @@ locals {
   }
   # Merge them
   eligibility_schedules = merge(local.eligible_members_map, local.eligible_schedules_map)
-
   # Convert list to map
   # Use index as key to allow for unknown principal_ids (e.g. created in same apply)
   eligible_members_map = {

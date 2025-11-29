@@ -65,7 +65,6 @@ module "privileged_group" {
   source = "../.."
 
   name = "legacy-pag-module-testing-${random_string.group_suffix.result}"
-
   # No eligible members are defined because membership is expected to be permanent in this pattern.
   eligible_members  = []
   group_description = "Legacy pattern: group itself is eligible for subscription RBAC."
@@ -75,5 +74,4 @@ module "privileged_group" {
     hide_from_outlook_clients = true
   }
   pim_require_mfa_on_activation = true
-
 }

@@ -93,7 +93,6 @@ module "privileged_group" {
   source = "../.."
 
   name = "pag-module-testing-admins-${random_string.group_suffix.result}"
-
   eligible_member_schedules = {
     front_line = {
       justification = "Operations on-call rotation."
@@ -174,5 +173,4 @@ module "privileged_group" {
   }
   pim_require_approval_on_activation = true
   pim_require_mfa_on_activation      = true
-
 }
