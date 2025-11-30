@@ -1,7 +1,4 @@
 # Group and role assignment resources
-
-
-
 resource "azuread_group" "this" {
   display_name       = var.name
   assignable_to_role = coalesce(var.group_settings.assignable_to_role, true)

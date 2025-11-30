@@ -29,7 +29,7 @@ The module supports the following as illustrated by examples:
 
 - **Group-Assignable**.  In this approach the group is activated into the role rather than an individual user.  This is not recommended except for specific circumstances (Microsoft recommend this approach for some M365 portals).  Further details and a comparison with "PIM for groups" are in the example [README.md](examples/group-eligible/README.md).
 
-- **Eligible for Entra Roles**.  This is the same as the eligible users approach except designed to be used directly against Entra Roles.
+- **Standard Security Groups**.  Demonstrates PIM features on a standard security group (not role-assignable). This is suitable for Azure Resource RBAC scenarios where the group does not need to hold Entra ID roles.
 
 ### Ownership Enforcement
 

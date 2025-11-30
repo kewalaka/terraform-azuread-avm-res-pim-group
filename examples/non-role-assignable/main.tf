@@ -23,11 +23,14 @@ provider "azurerm" {
   features {}
 }
 
+data "azurerm_client_config" "current" {}
+
 data "azuread_domains" "current" {
   only_initial = false
 }
 
 locals {
+  subscription_scope = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
   tenant_domain = coalesce(
     try([
       for domain in data.azuread_domains.current.domains : domain.domain_name
@@ -61,13 +64,13 @@ resource "azuread_user" "owner" {
 module "privileged_group" {
   source = "../.."
 
-  name = "pag-role-assignable-${random_string.group_suffix.result}"
+  name = "pag-non-role-assignable-${random_string.group_suffix.result}"
   # PIM onboarding happens automatically when you configure eligible members or PIM policy rules.
   # This example creates an eligible member assignment, which triggers PIM onboarding.
   eligible_members  = [azuread_user.owner.object_id]
-  group_description = "Fresh role-assignable group with an owner and PIM eligibility."
+  group_description = "Standard security group (not role-assignable) with PIM eligibility."
   group_settings = {
-    assignable_to_role = true
+    assignable_to_role = false
     security_enabled   = true
     mail_enabled       = false
     owners             = [azuread_user.owner.object_id]
